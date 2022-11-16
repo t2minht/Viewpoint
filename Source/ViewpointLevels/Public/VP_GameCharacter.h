@@ -30,6 +30,9 @@ public:
 	// UFUNCTION()
 	// void MoveForward(float Value);
 
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* CharacterMesh;
+
 	UFUNCTION()
 	void MoveRight(float Value);
 
