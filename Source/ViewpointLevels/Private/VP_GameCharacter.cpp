@@ -47,9 +47,35 @@ void AVP_GameCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 void AVP_GameCharacter::MoveRight(float Value)
 {
     // Find out which way is "right" and record that the player wants to move that way.
-	FVector Direction = FRotationMatrix(UGameplayStatics::GetPlayerController(GetWorld(),0)->GetViewTarget()->GetActorRotation()).GetScaledAxis(EAxis::Y);
+	// FVector Direction = FRotationMatrix(UGameplayStatics::GetPlayerController(GetWorld(),0)->GetViewTarget()->GetActorRotation()).GetScaledAxis(EAxis::Y);
+	FVector Direction = GetWorld()->GetFirstPlayerController()->PlayerCameraManager->GetCameraRotation().Vector();
+	float temp = Direction.Component(0);
+	
+	UE_LOG(LogTemp, Warning, TEXT("Dir1: %s"), *Direction.ToString());
+	// UE_LOG(LogTemp, Warning, TEXT("%f"), (abs(temp) - 1));
+	if(abs((abs(temp) - 1)) > 0.00000000000000000000000001){
+		UE_LOG(LogTemp, Warning, TEXT("here"));
+		Direction.Component(1) = -Direction.Component(1);
+	}
+	Direction.Component(0) = Direction.Component(1);
+	Direction.Component(1) = temp;
+	// FVector dir;
+	// if((abs(x) - 1) > 0.00000000000000000000000001){
+	// 	UE_LOG(LogTemp, Warning, TEXT("here"));
+	// 	dir = FRotationMatrix(UGameplayStatics::GetPlayerController(GetWorld(),0)->GetViewTarget()->GetActorRotation()).GetScaledAxis(EAxis::X);
+	// }else{
+	// 	UE_LOG(LogTemp, Warning, TEXT("there"));
+	// 	dir = FRotationMatrix(UGameplayStatics::GetPlayerController(GetWorld(),0)->GetViewTarget()->GetActorRotation()).GetScaledAxis(EAxis::Y);
+	// 	// UE_LOG(LogTemp, Warning, TEXT("dir: %s"), *dir.ToString());
+	// }
+	UE_LOG(LogTemp, Warning, TEXT("Dir2: %s"), *Direction.ToString());
+	// UE_LOG(LogTemp, Warning, TEXT("x: %f"), x);
     // FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
-    AddMovementInput(Direction, Value);
+	// if(abs(abs(Direction.Component(2)) - 1) > 0.00000000000000000000000001){
+	AddMovementInput(Direction, Value);
+	// FVector current = GetActorLocation();
+	// current.Component();
+	// SetActorLocation()
 }
 
 
